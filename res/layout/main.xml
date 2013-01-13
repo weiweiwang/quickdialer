@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout android:id="@+id/input_bar"
+                  style="@style/input_bar"
+                  android:layout_alignParentTop="true">
+        <TextView
+                android:id="@+id/input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="152"
+                android:singleLine="true"
+                android:textColor="#ffffff"/>
+        <ImageButton
+                android:id="@+id/btnDel"
+                style="@style/button_del"
+                />
+    </RelativeLayout>
+
+
+    <LinearLayout
+            android:id="@+id/keyboard"
+            style="@style/keyboard"
+            android:layout_alignParentBottom="true">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <include layout="@layout/keyboard"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/keyboard"
+            android:layout_below="@id/input_bar"/>
+</RelativeLayout>
