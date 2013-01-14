@@ -25,27 +25,52 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class DialerActivity extends Activity implements AdapterView.OnItemClickListener
-{
+public class DialerActivity extends Activity implements AdapterView.OnItemClickListener {
     private static final String TAG = DialerActivity.class.getSimpleName();
-    private static final int MAX_HITS=20;
-    /** Called when the activity is first created. */
+    private static final int MAX_HITS = 20;
+    /**
+     * Called when the activity is first created.
+     */
     private AbstractSearchService searchService;
     private TextView mInput;
     private ListView list;
-    private ResultAdapter resultAdapter=new ResultAdapter();
+    private ResultAdapter resultAdapter = new ResultAdapter();
     private Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        mInput = (TextView) findViewById(R.id.input);
-        list=((ListView)findViewById(R.id.list));
+        mInput = (TextView) findViewById(R.id.digits);
+        list = ((ListView) findViewById(R.id.list));
         list.setAdapter(resultAdapter);
         list.setOnItemClickListener(this);
-        searchService= SearchService.getInstance(this);
+        searchService = SearchService.getInstance(this);
+        search(null);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onStop");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onResume");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onDestroy");
+        }
     }
 
 
@@ -53,8 +78,7 @@ public class DialerActivity extends Activity implements AdapterView.OnItemClickL
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         Map<String, Object> searchRes = (Map<String, Object>) list.getAdapter().getItem(position);
-        if(searchRes.containsKey(SearchService.FIELD_NUMBER))
-        {
+        if (searchRes.containsKey(SearchService.FIELD_NUMBER)) {
             call(searchRes.get(SearchService.FIELD_NUMBER).toString());
         }
     }
@@ -64,9 +88,10 @@ public class DialerActivity extends Activity implements AdapterView.OnItemClickL
         intent.setData(Uri.fromParts("tel", number, null));
         startActivity(intent);
     }
+
     public void onBtnClick(View view) {
         switch (view.getId()) {
-            case R.id.btnDel:
+            case R.id.deleteButton:
                 delChar();
                 break;
             default:
@@ -81,10 +106,12 @@ public class DialerActivity extends Activity implements AdapterView.OnItemClickL
             search(searchText);
         }
     }
+
     private void addChar(String c) {
         c = c.toLowerCase(Locale.CHINA);
         mInput.setText(mInput.getText() + String.valueOf(c.charAt(0)));
     }
+
     private void delChar() {
         String text = mInput.getText().toString();
         if (text.length() > 0) {
@@ -92,9 +119,11 @@ public class DialerActivity extends Activity implements AdapterView.OnItemClickL
             mInput.setText(text);
         }
     }
+
     private void search(String query) {
         SearchCallback searchCallback = new SearchCallback() {
-            private long start=System.currentTimeMillis();
+            private long start = System.currentTimeMillis();
+
             @Override
             public void onSearchResult(String query, long hits,
                                        final List<Map<String, Object>> result) {
@@ -103,6 +132,7 @@ public class DialerActivity extends Activity implements AdapterView.OnItemClickL
                     public void run() {
                         resultAdapter.setItems(result);
                         resultAdapter.notifyDataSetChanged();
+                        list.smoothScrollToPosition(0);
                     }
                 });
                 Log.v(SearchService.TAG, "query:" + query + ",result: " + result.size() + ",time used:" + (System.currentTimeMillis() - start));
@@ -118,15 +148,15 @@ public class DialerActivity extends Activity implements AdapterView.OnItemClickL
     }
 
     private class ResultAdapter extends BaseAdapter {
-        private List<Map<String,Object>> items = new ArrayList<Map<String, Object>>();
+        private List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
+
         @Override
-        public synchronized  int getCount() {
+        public synchronized int getCount() {
             return items.size();
         }
 
-        public synchronized void setItems(List<Map<String,Object>> items)
-        {
-            this.items=items;
+        public synchronized void setItems(List<Map<String, Object>> items) {
+            this.items = items;
         }
 
         @Override
@@ -165,11 +195,9 @@ public class DialerActivity extends Activity implements AdapterView.OnItemClickL
                 nameBuilder.append(searchRes.get(SearchService.FIELD_PINYIN).toString());
             }
             StringBuilder numberBuilder = new StringBuilder();
-            if(searchRes.containsKey(SearchService.FIELD_HIGHLIGHTED_NUMBER))
-            {
+            if (searchRes.containsKey(SearchService.FIELD_HIGHLIGHTED_NUMBER)) {
                 numberBuilder.append(searchRes.get(SearchService.FIELD_HIGHLIGHTED_NUMBER).toString());
-            }else if(searchRes.containsKey(SearchService.FIELD_NUMBER))
-            {
+            } else if (searchRes.containsKey(SearchService.FIELD_NUMBER)) {
                 numberBuilder.append(searchRes.get(SearchService.FIELD_NUMBER));
             }
             holder.name.setText(Html.fromHtml(nameBuilder.toString()));

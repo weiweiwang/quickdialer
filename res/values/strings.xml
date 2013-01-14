@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">QuickDialer</string>
+    <string name="delete_button_descrition">点击清除输入</string>
+    <string name="test_input">15210</string>
 </resources>

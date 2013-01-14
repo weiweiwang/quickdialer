@@ -3,34 +3,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <RelativeLayout android:id="@+id/input_bar"
-                  style="@style/input_bar"
-                  android:layout_alignParentTop="true">
+    <LinearLayout
+            android:id="@+id/input_bar"
+            android:layout_width="match_parent"
+            android:layout_height="46dip"
+            android:layout_marginTop="2dip"
+            android:layout_marginBottom="2dip"
+            android:gravity="center"
+            android:background="@drawable/dialpad_background" >
+
         <TextView
-                android:id="@+id/input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/digits"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="152"
-                android:singleLine="true"
-                android:textColor="#ffffff"/>
-        <ImageButton
-                android:id="@+id/btnDel"
-                style="@style/button_del"
+                android:scrollHorizontally="true"
+                android:textAppearance="@style/DigitsTextAppearance"
+                android:nextFocusRight="@+id/deleteButton"
+                android:background="@android:color/transparent"
                 />
-    </RelativeLayout>
+
+        <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_width="56dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:state_enabled="false"
+                android:src="@drawable/ic_dial_action_delete"
+                android:background="@android:color/transparent"
+                android:onClick="onBtnClick"
+                android:contentDescription="@string/delete_button_descrition"/>
+    </LinearLayout>
 
 
     <LinearLayout
             android:id="@+id/keyboard"
             style="@style/keyboard"
             android:layout_alignParentBottom="true">
-
-        <FrameLayout
+		<include layout="@layout/keyboard"/>
+        <!-- <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <include layout="@layout/keyboard"/>
         </FrameLayout>
+         -->
     </LinearLayout>
 
     <ListView

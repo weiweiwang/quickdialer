@@ -35,4 +35,13 @@
         <item name="android:onClick">onBtnClick</item>
     </style>
 
+    <style name="DigitsTextAppearance">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:freezesText">true</item>
+        <item name="android:editable">false</item>
+        <item name="android:cursorVisible">false</item>
+    </style>
+
 </resources>

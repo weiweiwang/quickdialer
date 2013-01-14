@@ -4,4 +4,6 @@ bin/
 gen/
 local.properties
 out/
+.classpath
+.project
 
