@@ -8,8 +8,9 @@ I use lucene 4.0 in this project. Instead of using lucene-core.jar, I copy the l
 
 ## analyzer
 
-phone number: NGramAnalyzer
-contact name: convert to pinyin first(include the full pinyin and the first letters) first, then tokenize with LetterTokenizer, and filter with lowercase,t9,edgengram filter, please see PiniyinAnalyzer for detail information.
+* phone number: NGramAnalyzer
+
+* contact name: convert to pinyin first(include the full pinyin and the first letters) first, then tokenize with LetterTokenizer, and filter with lowercase,t9,edgengram filter, please see PiniyinAnalyzer for detail information.
 
 ## search
 
